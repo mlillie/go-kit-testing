@@ -9,14 +9,14 @@ import (
 )
 
 type service struct {
-	repostiry Repository
-	logger    log.Logger
+	repository Repository
+	logger     log.Logger
 }
 
 func NewService(rep Repository, logger log.Logger) Service {
 	return &service{
-		repostiry: rep,
-		logger:    logger,
+		repository: rep,
+		logger:     logger,
 	}
 }
 
@@ -30,7 +30,7 @@ func (s service) CreatePerson(ctx context.Context, name string) (string, error) 
 		Name: name,
 	}
 
-	if err := s.repostiry.CreatePerson(ctx, person); err != nil {
+	if err := s.repository.CreatePerson(ctx, person); err != nil {
 		level.Error(logger).Log("err", err)
 		return "", err
 	}
@@ -43,7 +43,7 @@ func (s service) CreatePerson(ctx context.Context, name string) (string, error) 
 func (s service) GetPerson(ctx context.Context, id string) (string, error) {
 	logger := log.With(s.logger, "method", "GetPerson")
 
-	name, err := s.repostiry.GetPerson(ctx, id)
+	name, err := s.repository.GetPerson(ctx, id)
 
 	if err != nil {
 		level.Error(logger).Log("err", err)
